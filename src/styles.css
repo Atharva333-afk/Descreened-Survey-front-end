@@ -1,0 +1,71 @@
+/* Base layout */
+  * { box-sizing: border-box; }
+  body { margin: 24px; background: #fff; color: #111; font: 14px/1.4 Arial, Helvetica, sans-serif; }
+  main { width: 100%; }
+  h1 { margin: 0 0 8px; font-size: 28px; }
+  h2 { margin: 34px 0 10px; padding-top: 18px; border-top: 1px solid #bbb; font-size: 21px; }
+  h3 { margin: 22px 0 8px; font-size: 17px; }
+  p { max-width: 1100px; margin: 8px 0 14px; }
+  a { color: #0645ad; }
+
+  /* Reusable dashboard pieces */
+  .note { font-size: 13px; }
+  .numbers, .controls { display: flex; flex-wrap: wrap; gap: 12px; }
+  .numbers { margin: 16px 0; }
+  .controls { align-items: end; margin: 12px 0; }
+  .number, .detail, details { border: 1px solid #bbb; background: #fff; }
+  .number { min-width: 155px; padding: 9px 11px; font-size: 12px; }
+  .number strong, .number small, .heat small { display: block; }
+  .number strong { font-size: 22px; line-height: 1.2; }
+  .number small, .heat small, .detail dt { color: #555; }
+  .number small { font-size: 11px; }
+  label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+  input, select, button { border: 1px solid #777; border-radius: 0; color: #111; font: inherit; }
+  input, select { max-width: 100%; min-width: 140px; padding: 8px; background: #fff; }
+  input[type="search"] { width: min(480px, 100%); }
+  button { padding: 8px 12px; background: #f8f8f8; cursor: pointer; }
+  button:hover { background: #eee; }
+  :focus-visible { outline: 2px solid #333; outline-offset: 2px; }
+
+  /* Tables and visualizations */
+  .table-wrap { max-height: 560px; margin: 8px 0 20px; overflow: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 7px; border: 1px solid #bbb; text-align: left; vertical-align: top; font-variant-numeric: tabular-nums; }
+  th { position: sticky; top: 0; z-index: 1; background: #eee; white-space: nowrap; }
+  tbody tr:hover { background: #f7f7f7; }
+  .profile-table table { min-width: 1300px; }
+  .profile-table th, .profile-table td { white-space: nowrap; }
+  .profile-table button { padding: 3px 6px; font-size: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .chart { max-width: 560px; }
+  .chart svg, canvas { display: block; width: 100%; }
+  .chart svg { height: auto; }
+  canvas { height: 300px; max-width: 1000px; }
+  .heat th:first-child { min-width: 125px; }
+  .heat td { min-width: 50px; cursor: pointer; text-align: center; }
+
+  /* Profile details */
+  .detail { margin: 16px 0; padding: 14px; }
+  .detail dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 16px; }
+  .detail dl div { padding: 5px; border-bottom: 1px solid #ddd; }
+  .detail dt { font-size: 12px; }
+  .detail dd { margin: 2px 0; overflow-wrap: anywhere; font-size: 13px; }
+  details { margin: 10px 0 18px; }
+  summary { padding: 9px 12px; cursor: pointer; font-weight: 700; }
+  details > div { padding: 3px 12px 12px; }
+  .demo-note { max-width: 1100px; padding: 10px 12px; border: 1px solid #777; }
+
+  @media (max-width: 700px) {
+    body { margin: 14px; }
+    .grid { grid-template-columns: 1fr; }
+    .detail dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .number { min-width: 135px; flex: 1 1 135px; }
+    .controls label { min-width: 120px; flex: 1 1 120px; }
+  }
+
+  @media (max-width: 420px) {
+    h1 { font-size: 23px; }
+    h2 { font-size: 19px; }
+    .detail dl { grid-template-columns: 1fr; }
+    th, td { padding: 6px; }
+  }
