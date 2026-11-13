@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Descreened Survey Dashboard</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Descreened screen-time source tables and profile analysis.">
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+<main>
+  <h1>Screen Time Survey Data by Descreened</h1>
+  <p class="note">The dashboard is followed by analysis of the 10,892-row profile workbook.</p>
+
+  <h2 id="live"> dashboard: 10,893 entries</h2>
+  <p class="note">Snapshot: 10,892 modeled profiles plus one  copy. Sleep quality, bedtime, wakeups, notifications, reduction, mood, and focus are calculated examples. <button id="refreshLive" type="button">Reload dashboard</button></p>
+  <p class="note" id="liveStatus" role="status">Loading dashboard summary…</p>
+  <div class="numbers" id="liveNumbers"></div>
+  <div class="table-wrap" id="liveAverages"></div>
+  <details><summary> groups and relationships</summary><div>
+    <h3>Age groups</h3><div class="table-wrap" id="liveAge"></div>
+    <h3>Gender</h3><div class="table-wrap" id="liveGender"></div>
+    <h3>Living environment</h3><div class="table-wrap" id="liveEnvironment"></div>
+    <h3>Household economic situation</h3><div class="table-wrap" id="liveSES"></div>
+    <h3>Primary platforms</h3><div class="table-wrap" id="livePlatform"></div>
+    <h3>Peak usage times</h3><div class="table-wrap" id="livePeak"></div>
+    <h3>Countries with at least 10 responses</h3><div class="table-wrap" id="liveCountry"></div>
+    <h3>Screen activities</h3><div class="table-wrap" id="livePurposes"></div>
+    <h3>AI-assisted school tasks</h3><div class="table-wrap" id="liveAiTasks"></div>
+    <h3>Screen-reduction attempts</h3><div class="table-wrap" id="liveReduction"></div>
+    <h3>Screen-time bands</h3><div class="table-wrap" id="liveBands"></div>
+    <h3>Selected Pearson correlations</h3><div class="table-wrap" id="liveCorrelations"></div>
+  </div></details>
+
+  <details><summary>How added fields are calculated</summary><div class="note"><p>These are calculated examples, not questionnaire answers. Sleep quality is modeled sleep score divided by 20, rounded to 1 to 5. Before-bed minutes use screen hours and modeled night-use share (max 120); wakeups use night-use share divided by 12 (max 7); notifications are pickups multiplied by 3.2. Reduction minutes use the modeled reduction index and screen minutes; mood and focus use the modeled wellbeing index. Activity and AI-task groups are inferred from platform and modeled AI sessions.</p></div></details>
+
+  <h2 id="profiles">Modeled respondent profiles</h2>
+  <p class="note">Search and filter all 10,892 profiles; open a row to view all 53 fields.</p>
+  <div class="controls">
+    <label>Search any field<input id="profileSearch" type="search" placeholder="ID, country, platform, or metric"></label>
+    <label>Age group<select id="ageFilter"></select></label>
+    <label>Platform<select id="platformFilter"></select></label>
+    <label>Continent<select id="continentFilter"></select></label>
+    <button id="clearFilters" type="button">Clear</button>
+  </div>
+  <p class="note"><span id="profileCount">Loading profiles…</span></p>
+  <div class="table-wrap profile-table"><table id="profileTable"></table></div>
+  <p><button id="loadMore" type="button">Show next 100 profiles</button></p>
+  <div class="detail" id="profileDetail" hidden></div>
+
+  <h2 id="patterns">Distribution and benchmark detail</h2>
+  <p class="note">Averages and percentiles use all 10,892 rows.</p>
+  <div class="table-wrap" id="summaryTable"></div>
+  <div class="grid">
+    <div><h3>Daily screen time</h3><div class="chart" id="hoursChart"></div><p class="note" id="hoursFoot"></p></div>
+    <div><h3>Daily device pickups</h3><div class="chart" id="pickupsChart"></div><p class="note" id="pickupsFoot"></p></div>
+    <div><h3>School screen use</h3><div class="chart" id="schoolChart"></div><p class="note" id="schoolFoot"></p></div>
+    <div><h3>Modeled sleep score</h3><div class="chart" id="sleepChart"></div><p class="note" id="sleepFoot"></p></div>
+  </div>
+  <h3>Primary platform</h3><div class="table-wrap" id="platformTable"></div>
+  <h3>Peak usage time</h3><div class="table-wrap" id="timeTable"></div>
+
+  <h2 id="connections">Relationships between measures</h2>
+  <p class="note">Choose two fields to inspect their Pearson correlation and a simple fitted line. Some values were calculated from other fields, so these relationships do not establish cause and effect.</p>
+  <div class="controls">
+    <label>Horizontal axis<select id="xMetric"></select></label>
+    <label>Vertical axis<select id="yMetric"></select></label>
+    <label>Age group<select id="scatterFilter"></select></label>
+  </div>
+  <canvas id="scatter" role="img" aria-label="Scatter plot of selected measures"></canvas>
+  <p class="note" id="scatterStat"></p>
+  <h3>Correlation table</h3><div class="table-wrap" id="correlationTable"></div>
+  <details><summary>Correlation matrix</summary><div class="table-wrap" id="heatmap"></div></details>
+  <h3>Notable connections</h3>
+  <div class="table-wrap"><table id="findingsTable"></table></div>
+
+  <h2>Group comparisons</h2>
+  <p class="note">Select a group and measure to see the profile count and mean. Geographic usage comparisons are limited because many profiles use a template from another region.</p>
+  <div class="controls"><label>Group by<select id="groupSelect"></select></label><label>Compare average<select id="groupMetric"></select></label></div>
+  <h3 id="groupTitle">Group comparison</h3><p class="note" id="groupContext"></p>
+  <div class="table-wrap" id="groupTable"></div>
+  <h3>Two-category intersections</h3>
+  <div class="controls"><label>Cross-tabulation<select id="crossSelect"></select></label></div>
+  <div class="table-wrap" id="crossTable"></div>
+
+  <h2 id="models">Regression and classification</h2>
+  <p class="note">Fits use modeled rows. Sleep score is modeled from usage and wellbeing, so classification accuracy reflects the construction, not real-world prediction.</p>
+  <h3>Linear and logarithmic regression</h3><div class="table-wrap" id="regressionTable"></div>
+  <h3>Sleep-band classification</h3><div class="table-wrap" id="classificationTable"></div>
+  <h3>Decision-tree paths</h3><div class="table-wrap" id="pathTable"></div>
+
+  <h2 id="sources">Source tables and field definitions</h2>
+  <h3>Earlier workbook scope</h3>
+  <p class="note">The earlier workbook reports 4,892 total: 150 rows marked provided and 4,742 without source responses. The 10,892-row attachment matches profiles constructed in earlier work; live submissions do not change these counts.</p>
+  <h3>Construction checks</h3><div class="table-wrap" id="checksTable"></div>
+  <h3>Source aggregate by continent</h3><div class="table-wrap" id="continentTable"></div>
+  <h3>Source aggregate by gender</h3><div class="table-wrap" id="sourceGender"></div>
+  <h3>Source aggregate by country</h3><div class="table-wrap" id="sourceCountries"></div>
+  <h3>Data dictionary</h3><p class="note">Definitions for every field in the profile workbook.</p><div class="table-wrap" id="dictionaryTable"></div>
+</main>
+<script src="./public/data/dashboard-data.js"></script>
+<script src="./public/data/demo-summary.js"></script>
+<script src="./src/app.js"></script>
+</body>
+</html>

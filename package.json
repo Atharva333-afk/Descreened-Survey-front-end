@@ -1,0 +1,10 @@
+{
+  "name": "descreened-survey-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static survey dashboard for Descreened.",
+  "scripts": {
+    "start": "python3 -m http.server 4173",
+    "check": "node --check src/app.js && node --check public/data/dashboard-data.js && node --check public/data/demo-summary.js"
+  }
+}
